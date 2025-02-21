@@ -1,0 +1,5 @@
+containers:
+  - name: my-app
+    image: myconregistry.azurecr.io/my-nginx-app:v2   # Ensure this is correct
+    ports:
+      - containerPort: 80

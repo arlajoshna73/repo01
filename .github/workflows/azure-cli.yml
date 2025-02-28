@@ -32,4 +32,4 @@ jobs:
         docker push $IMAGE_NAME:$IMAGE_TAG
  
     - name: Logout from Azure Container Registry
-      run: docker logout ${{ secrets.AZURE_REGISTRY_URL }}
+      run: docker logout myconregistry.azurecr.io

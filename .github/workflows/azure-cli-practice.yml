@@ -1,4 +1,4 @@
-name: azure-cli
+name: azure-cli-practice
  
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
  
     - name: Build and push Docker image
       run: |
-        IMAGE_NAME=${{ secrets.AZURE_REGISTRY_URL }}/nginx
+        IMAGE_NAME=${{ secrets.AZURE_REGISTRY_URL }}/repo01
         IMAGE_TAG=v1
  
         echo "Building Docker image..."

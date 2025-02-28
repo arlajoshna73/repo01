@@ -1,4 +1,4 @@
-name: Azure CLI Workflow
+name: Azure CLI Practice
 
 on:
   push:
@@ -6,34 +6,26 @@ on:
       - main  # Trigger the workflow on push to the main branch
 
 jobs:
-  run-az-commands:
+  practice-az-commands:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3  # Check out your repository code
 
-    - name: Login to Azure
-      uses: azure/login@v1  # Authenticate with Azure
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}  # Use the Azure credentials stored in GitHub Secrets
-- name: Run Azure CLI commands
-  run: |
- 
-    az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+    - name: Install Azure CLI
+      run: |
+        # Install Azure CLI on the runner
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-    # List existing resource groups
-    echo "Listing all resource groups:"
-    az group list --output table
+    - name: Run basic Azure CLI commands
+      run: |
+        # Display Azure CLI version (no authentication required)
+        az --version
 
-    # Verify that RG_AKS exists
-    echo "Checking if RG_AKS exists:"
-    az group show --name RG_AKS --output table
+        # Simulate a command that doesn't require authentication
+        echo "This is a practice command. No real Azure credentials are needed."
 
-    # List storage accounts in RG_AKS
-    echo "Listing storage accounts in RG_AKS:"
-    az storage account list --resource-group RG_AKS --output table
-
-    # Show details of the specific storage account
-    echo "Fetching details of aksstorageacct01:"
-    az storage account show --name aksstorageacct01 --resource-group RG_AKS --output table
+        # Example: List locations (requires authentication, but will fail gracefully)
+        echo "Attempting to list Azure locations (will fail without credentials):"
+        az account list-locations --output table || echo "This command failed because no credentials were provided."

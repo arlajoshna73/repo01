@@ -1,0 +1,39 @@
+name: Azure CLI Workflow
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+
+jobs:
+  run-az-commands:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3  # Check out your repository code
+
+    - name: Login to Azure
+      uses: azure/login@v1  # Authenticate with Azure
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}  # Use the Azure credentials stored in GitHub Secrets
+- name: Run Azure CLI commands
+  run: |
+ 
+    az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+
+    # List existing resource groups
+    echo "Listing all resource groups:"
+    az group list --output table
+
+    # Verify that RG_AKS exists
+    echo "Checking if RG_AKS exists:"
+    az group show --name RG_AKS --output table
+
+    # List storage accounts in RG_AKS
+    echo "Listing storage accounts in RG_AKS:"
+    az storage account list --resource-group RG_AKS --output table
+
+    # Show details of the specific storage account
+    echo "Fetching details of aksstorageacct01:"
+    az storage account show --name aksstorageacct01 --resource-group RG_AKS --output table

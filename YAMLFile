@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: MyApp
-        image: myConregistry.azurecr.io/MyApp:latest
+        image: myConregistrydemo.azurecr.io/MyApp:latest
         ports:
         - containerPort: 80
